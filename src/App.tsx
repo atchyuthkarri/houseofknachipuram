@@ -66,54 +66,6 @@ const scrollToSection = (e: React.MouseEvent<HTMLElement>, id: string, lenisRef?
   }
 };
 
-// Luxury Monogram Preloader Screen
-const Preloader = ({ onLoadComplete }: { onLoadComplete: () => void }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const monogramRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: onLoadComplete
-      });
-
-      tl.from(monogramRef.current, {
-        scale: 0.9,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out"
-      })
-      .to(monogramRef.current, {
-        opacity: 1,
-        duration: 0.6 // pause for visual branding
-      })
-      .to(containerRef.current, {
-        yPercent: -100,
-        duration: 1.2,
-        ease: "power4.inOut"
-      });
-    });
-
-    return () => ctx.revert();
-  }, [onLoadComplete]);
-
-  return (
-    <div 
-      ref={containerRef} 
-      className="fixed inset-0 bg-[#2a0c0e] z-[9999] flex flex-col items-center justify-center text-white"
-    >
-      <div ref={monogramRef} className="text-center space-y-6">
-        <div className="w-16 h-16 rounded-full border border-[#c49a6c] flex items-center justify-center mx-auto text-xl text-[#c49a6c] animate-spin-slow">
-          ❖
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-serif text-[#c49a6c] tracking-[0.2em] uppercase">{BRAND}</h2>
-          <p className="text-[9px] uppercase tracking-widest text-[#f8f5f0]/60">Handloom Silk Mark Heritage</p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Navbar = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -319,7 +271,7 @@ const Hero = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }) => {
         duration: 1.4,
         stagger: 0.25,
         ease: "power4.out",
-        delay: 1.4 // wait for preloader fadeout
+        delay: 0.2 // snappy reveal on load
       });
 
       gsap.from(".hero-fade", {
@@ -328,14 +280,14 @@ const Hero = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }) => {
         duration: 1.2,
         stagger: 0.2,
         ease: "power3.out",
-        delay: 2.0
+        delay: 0.8
       });
     }, heroRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={heroRef} className="relative h-screen mt-0 bg-[#d3bcad] overflow-hidden flex items-center justify-end px-6 sm:px-12 lg:px-32">
+    <section ref={heroRef} className="relative h-screen mt-0 bg-[#d3bcad] overflow-hidden flex items-center justify-end px-6 sm:px-12 lg:px-32 pt-24 lg:pt-32 pb-12">
       <div className="absolute inset-0 z-0">
         <img 
           src={img3838} 
@@ -344,29 +296,31 @@ const Hero = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-black/75"></div>
       </div>
-      
-      <div ref={textRef} className="relative z-10 max-w-2xl text-right text-white space-y-6">
-        <span className="hero-fade text-[#c49a6c] font-semibold tracking-widest text-xs sm:text-sm uppercase block">
-          ❖ Luxury Silk & Zari Weaves ❖
-        </span>
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif leading-tight overflow-hidden py-1">
-          <span className="hero-reveal block">Gorgeous designs that perfectly</span>
-          <span className="hero-reveal block">express your romantic stories</span>
+       <div ref={textRef} className="relative z-10 max-w-4xl text-right text-white space-y-6">
+        <div className="hero-fade flex items-center justify-end gap-3 text-[#c49a6c]">
+          <span className="h-[1px] w-10 bg-[#c49a6c]/60"></span>
+          <span className="font-semibold tracking-[0.25em] text-xs sm:text-sm uppercase">
+            ❖ Luxury Silk & Zari Weaves ❖
+          </span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-serif leading-[1.1] font-light overflow-hidden py-1 tracking-wide">
+          <span className="hero-reveal block">Woven in <span className="italic text-[#c49a6c]">Pure Gold</span> & Silk,</span>
+          <span className="hero-reveal block">Crafted for <span className="italic">Generations</span>.</span>
         </h1>
-        <p className="hero-fade text-sm sm:text-lg font-light tracking-wide text-[#f8f5f0]/90">
-          Discover our stunning collection of authentic handloom wedding sarees. 
-          Where centuries-old legacy meets modern elegance.
+        <p className="hero-fade text-sm sm:text-base lg:text-lg font-light tracking-wide text-[#f8f5f0]/80 max-w-2xl ml-auto leading-relaxed">
+          Discover the timeless artistry of authentic Kanchipuram handlooms—where 
+          generations of dual-loom heritage and genuine gold zari meet contemporary bridal elegance.
         </p>
-        <div className="hero-fade flex justify-end gap-3 sm:gap-4 pt-4">
+        <div className="hero-fade flex justify-end gap-4 pt-4">
           <button 
             onClick={(e) => scrollToSection(e, 'collections', lenisRef)}
-            className="bg-[#6a282b] border border-[#6a282b] text-white px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wider hover:bg-[#4a1b1d] hover:border-[#4a1b1d] transition-all duration-300 shadow-lg cursor-pointer focus:outline-none"
+            className="bg-[#6a282b] border border-[#6a282b] text-[#f8f5f0] px-7 sm:px-9 py-4 text-xs font-bold tracking-widest uppercase hover:bg-transparent hover:text-white hover:border-white transition-all duration-300 shadow-lg cursor-pointer focus:outline-none"
           >
             Shop The Collection
           </button>
           <button 
             onClick={(e) => scrollToSection(e, 'heritage', lenisRef)}
-            className="border border-white text-white px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wider hover:bg-white hover:text-black transition-all duration-300 cursor-pointer focus:outline-none"
+            className="border border-white/40 text-white px-7 sm:px-9 py-4 text-xs font-bold tracking-widest uppercase hover:bg-white hover:text-black hover:border-white transition-all duration-300 cursor-pointer focus:outline-none"
           >
             Our Legacy
           </button>
@@ -1471,7 +1425,6 @@ const products2 = [
 ];
 
 function App() {
-  const [loading, setLoading] = useState(true);
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -1501,42 +1454,25 @@ function App() {
     };
   }, []);
 
-  // Lock scrolling during preloader state
-  useEffect(() => {
-    if (lenisRef.current) {
-      if (loading) {
-        lenisRef.current.stop();
-      } else {
-        lenisRef.current.start();
-      }
-    }
-  }, [loading]);
-
   return (
     <div className="min-h-screen flex flex-col bg-white w-full overflow-x-hidden selection:bg-[#6a282b] selection:text-white">
-      <Preloader onLoadComplete={() => setLoading(false)} />
-      
-      {!loading && (
-        <>
-          <Navbar lenisRef={lenisRef} />
-          <Hero lenisRef={lenisRef} />
-          <HeritageStory />
-          <PromoBanners lenisRef={lenisRef} />
-          <Marquee />
-          <ProductShowcase id="collections" title="The Royal Kanchipuram Collection" subtitle="Explore our heirloom drapes handwoven for special celebrations." products={products1} showFilters={true} />
-          <WeavingProcess />
-          <CinematicBanner />
-          <InfoBar />
-          <ProductShowcase title="The Bridal Couture Edit" subtitle="Intricate pure gold zari weaves designed for the modern bride." products={products2} showFilters={false} />
-          <FestiveDrapes lenisRef={lenisRef} />
-          <StoreLocations lenisRef={lenisRef} />
-          <ConsultationForm />
-          <FAQ />
-          <AppPromo />
-          <Reviews />
-          <Footer lenisRef={lenisRef} />
-        </>
-      )}
+      <Navbar lenisRef={lenisRef} />
+      <Hero lenisRef={lenisRef} />
+      <HeritageStory />
+      <PromoBanners lenisRef={lenisRef} />
+      <Marquee />
+      <ProductShowcase id="collections" title="The Royal Kanchipuram Collection" subtitle="Explore our heirloom drapes handwoven for special celebrations." products={products1} showFilters={true} />
+      <WeavingProcess />
+      <CinematicBanner />
+      <InfoBar />
+      <ProductShowcase title="The Bridal Couture Edit" subtitle="Intricate pure gold zari weaves designed for the modern bride." products={products2} showFilters={false} />
+      <FestiveDrapes lenisRef={lenisRef} />
+      <StoreLocations lenisRef={lenisRef} />
+      <ConsultationForm />
+      <FAQ />
+      <AppPromo />
+      <Reviews />
+      <Footer lenisRef={lenisRef} />
     </div>
   );
 }
