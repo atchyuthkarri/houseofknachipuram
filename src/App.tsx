@@ -1303,11 +1303,11 @@ const Reviews = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Fade reveal reviews staggered
+      // Fade reveal reviews staggered - trigger when section top enters near bottom of viewport
       gsap.from(".review-card", {
         scrollTrigger: {
           trigger: reviewsRef.current,
-          start: "top 80%",
+          start: "top bottom-=100px",
           toggleActions: "play none none none"
         },
         y: 40,
@@ -1329,7 +1329,7 @@ const Reviews = () => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {reviews.map((review, i) => (
-          <div key={i} className="review-card relative group overflow-hidden bg-gray-950 text-white aspect-[3/4] flex flex-col justify-end p-6 shadow-md hover:shadow-xl transition-all duration-555">
+          <div key={i} className="review-card relative group overflow-hidden bg-gray-950 text-white aspect-[3/4] flex flex-col justify-end p-6 shadow-md hover:shadow-xl transition-shadow duration-500">
             <img 
               src={review.image} 
               className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 group-hover:scale-102 transition-all duration-700" 
@@ -1453,9 +1453,24 @@ function App() {
     gsap.ticker.add(tickerUpdate);
     gsap.ticker.lagSmoothing(0);
 
+    // Initial ScrollTrigger recalculation
+    ScrollTrigger.refresh();
+
+    // Refresh ScrollTrigger when window loads and after images settle
+    const handleLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('load', handleLoad);
+
+    const timeoutId = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1200);
+
     return () => {
       lenisInstance.destroy();
       gsap.ticker.remove(tickerUpdate);
+      window.removeEventListener('load', handleLoad);
+      clearTimeout(timeoutId);
     };
   }, []);
 
