@@ -714,7 +714,9 @@ const FestiveDrapes = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }
     const scrollContainer = scrollContainerRef.current;
     if (!pinContainer || !scrollContainer) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
       const scrollWidth = scrollContainer.scrollWidth;
       const clientWidth = scrollContainer.clientWidth;
       const xVal = -(scrollWidth - clientWidth);
@@ -731,16 +733,16 @@ const FestiveDrapes = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }
           invalidateOnRefresh: true,
         }
       });
-    }, pinContainerRef);
+    });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
     <section id="festive" ref={pinContainerRef} className="relative bg-[#f8f5f0] overflow-hidden border-y border-gray-200">
-      <div ref={scrollContainerRef} className="flex flex-row items-center h-screen px-12 md:px-24 gap-12 w-max">
+      <div ref={scrollContainerRef} className="flex flex-col md:flex-row md:items-center h-auto md:h-screen py-16 md:py-0 px-6 md:px-24 gap-10 md:gap-12 w-full md:w-max">
         {/* Detail Callout Card */}
-        <div className="w-[300px] sm:w-[420px] flex-shrink-0 space-y-6 pr-8">
+        <div className="w-full md:w-[420px] flex-shrink-0 space-y-6 pr-0 md:pr-8">
           <div className="text-[#6a282b] font-medium tracking-widest text-xs uppercase">
             ❖ Lightweight Splendor ❖
           </div>
@@ -760,75 +762,78 @@ const FestiveDrapes = ({ lenisRef }: { lenisRef: React.RefObject<Lenis | null> }
           </div>
         </div>
 
-        {/* Saree Card 1 */}
-        <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl">
-          <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4] relative">
-            <img 
-              src={img3844} 
-              alt="Festive Brocade Saree" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Vasantam Mustard Saree</h4>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1">₹34,900</p>
+        {/* Cards Wrapper (Scrollable row on mobile, transparent flex-row wrapper on desktop) */}
+        <div className="flex flex-row overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scrollbar-none gap-6 md:gap-12 pb-6 md:pb-0 w-full md:w-auto">
+          {/* Saree Card 1 */}
+          <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl snap-center">
+            <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4] relative">
+              <img 
+                src={img3844} 
+                alt="Festive Brocade Saree" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
-            <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">New</span>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Vasantam Mustard Saree</h4>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">₹34,900</p>
+              </div>
+              <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">New</span>
+            </div>
           </div>
-        </div>
 
-        {/* Saree Card 2 */}
-        <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl">
-          <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4]">
-            <img 
-              src={img3845} 
-              alt="Golden Zari Saree" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Marakata Emerald Silk</h4>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1">₹42,000</p>
+          {/* Saree Card 2 */}
+          <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl snap-center">
+            <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4]">
+              <img 
+                src={img3845} 
+                alt="Golden Zari Saree" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
-            <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Pure Silk</span>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Marakata Emerald Silk</h4>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">₹42,000</p>
+              </div>
+              <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Pure Silk</span>
+            </div>
           </div>
-        </div>
 
-        {/* Saree Card 3 */}
-        <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl">
-          <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-55 mb-4 aspect-[3/4]">
-            <img 
-              src={img3835} 
-              alt="Vaikuntha Brocade" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Vaikuntha Brocade Saree</h4>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1">₹62,000</p>
+          {/* Saree Card 3 */}
+          <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl snap-center">
+            <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4]">
+              <img 
+                src={img3835} 
+                alt="Vaikuntha Brocade" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
-            <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Loom Drop</span>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Vaikuntha Brocade Saree</h4>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">₹62,000</p>
+              </div>
+              <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Loom Drop</span>
+            </div>
           </div>
-        </div>
 
-        {/* Saree Card 4 */}
-        <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl mr-12 md:mr-24">
-          <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-55 mb-4 aspect-[3/4]">
-            <img 
-              src={img3837} 
-              alt="Rudraksha Zari Saree" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Rudraksha Zari Weave</h4>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1">₹54,000</p>
+          {/* Saree Card 4 */}
+          <div className="w-[280px] sm:w-[350px] bg-white p-4 shadow-lg border border-gray-100 flex-shrink-0 group cursor-pointer text-left transition-all duration-300 hover:shadow-xl mr-6 md:mr-24 snap-center">
+            <div className="h-[360px] sm:h-[400px] overflow-hidden bg-gray-50 mb-4 aspect-[3/4]">
+              <img 
+                src={img3837} 
+                alt="Rudraksha Zari Saree" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
             </div>
-            <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Temple border</span>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-serif text-base sm:text-lg text-gray-900 group-hover:text-[#6a282b] transition-colors">Rudraksha Zari Weave</h4>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">₹54,000</p>
+              </div>
+              <span className="text-[10px] bg-[#c49a6c]/20 text-[#6a282b] uppercase tracking-widest px-2 py-0.5 font-bold">Temple border</span>
+            </div>
           </div>
         </div>
       </div>
